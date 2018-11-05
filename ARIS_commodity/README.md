@@ -1,2 +1,2 @@
-ARIS: Authentication for Real-Time IoT Systems
+To make, run make ARCH=x64
 
