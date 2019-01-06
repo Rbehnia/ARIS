@@ -189,22 +189,18 @@ int main()
 
         modulo_order((digit_t*)secretTemp, (digit_t*)secretTemp);
 
-        // blake2b(secretTemp, &index, NULL, 32, 8, 0);
-        // memmove(secretTemp,scalar_table +32*index,32);
+ 
         memmove(publicTemp,publicAll_R +64*index,64);
         point_setup((point_affine*)publicTemp, R_sign);
 
-        // if (ecc_point_validate(R_sign))
-			// printf("The point is set Sign R_sign -- 1\n");
+ 
 
         index = hashedMsg[2] + ((hashedMsg[3]/64) * 256);
         ecbEncCounterMode(index,2,prf_out);
         memmove(secretTemp2,prf_out,32);
 
         modulo_order((digit_t*)secretTemp2, (digit_t*)secretTemp2);
-
-        // blake2b(secretTemp2, &index, NULL, 32, 8, 0);
-        // memmove(secretTemp2,scalar_table +32*index,32);
+ 
         memmove(publicTemp,publicAll_R +64*index,64);
         point_setup((point_affine*)publicTemp, TempExtproj);
 
@@ -225,10 +221,7 @@ int main()
             memmove(secretTemp,prf_out,32);
 
             modulo_order((digit_t*)secretTemp, (digit_t*)secretTemp);
-            
-            // printf("in KEygen  for index %d = ",index );
-            // print_hex(secretTemp,32);
-            // printf("\n");
+ 
 
             memmove(publicTemp,publicAll_R +64*index,64);
             point_setup((point_affine*)publicTemp, TempExtproj);
@@ -242,37 +235,7 @@ int main()
 
         eccnorm(R_sign, (point_affine*)lastPublic);
 
-        // printf("lastPublic = ");
-        // print_hex(lastPublic,64);
-        // printf("\n");
-
-        // modulo_order((digit_t*)lastSecret, (digit_t*)lastSecret);
-
-        // ecc_mul_fixed((digit_t*)lastSecret, (point_affine*)publicTemp);
-        // Status = PublicKeyGeneration(lastSecret, publicTemp);
-        // if (Status != ECCRYPTO_SUCCESS) {
-        //     goto cleanup;
-        // }
-
-        // printf("publicTemp = ");
-        // print_hex(publicTemp,64);
-        // printf("\n");
-
-        // // // BPVOnline(lastSecret, lastPublic);
-        // // // printf("After BPVOnline Function\n");
-
-        // printf("lastPublic = ");
-        // print_hex(lastPublic,64);
-        // printf("\n");
-
-          // modulo_order(r, r);
-
-        // ecc_mul_fixed((digit_t*)lastSecret, (point_affine*)publicTemp);
-
-        // printf("publicTemp = ");
-        // print_hex(publicTemp,64);
-        // printf("\n");
-// =========================================== Second part of Sign
+ 
  
         blake2b(h, lastPublic, NULL, 32,64,0); 
         memmove(concatMsg, message,32); // Concatenate h and m
@@ -307,26 +270,11 @@ int main()
             modulo_order((digit_t*)secretKeyTemp, (digit_t*)secretKeyTemp);
 
  
-
-            
-
-            // blake2b(secretTemp, &index, NULL, 32, 8, 0);
-            // memmove(secretTemp,scalar_table +32*index,32);
-
-            // ecc_mul_fixed((digit_t*)secretKeyTemp, (point_affine*)myChecks);
-            // printf("in sign for index %d = ", index);
-            // print_hex(myChecks,64);
-            // printf("\n");
             add_mod_order((digit_t*)secretKeyTemp, (digit_t*)(sigma), (digit_t*)(sigma)); // Add the x_i's and compute the final x_i
 
         }
         
-        //ecc_mul_fixed(x_i, (point_affine*)myChecks);
-
-        // printf("in sign1 = ");
-        // print_hex(myChecks,64);
-        // printf("\n");
-        //modulo_order((digit_t*)sigma, (digit_t*)sigma);
+ 
 
         subtract_mod_order((digit_t*)(lastSecret),(digit_t*)(sigma) ,(digit_t*)(sigma)); 
         //modulo_order(x_i, x_i);
@@ -334,40 +282,7 @@ int main()
         SignTime = SignTime +(double)(flagSignEnd-flagSignStart);
 
 
-// =========================================== The End of second part of sign
-
-//            point_setup(R_sign, R_point);  // Convert the final R to unsigned char * to be hashed into h
-//            encode(R_point, R_char); 
-//            blake2b(h, R_char, NULL, 32,32,0); 
-//            strcpy(concatMsg, message); // Concatenate h and m
-//            memcpy(concatMsg+32, h, 32);
-//            blake2b(hashedMsg, concatMsg, NULL, 64,64,0); // Hash m||h
-//            index = hashedMsg[0] + ((hashedMsg[0+1]/64) * 256); // Find the indexes for the private keys using a public hash function
-//            ecbEncCounterMode(index,2,prf_out); // Regenerate the y_i
-//            memmove(prf_out2,prf_out,32);
-//            digit_t* y  = (digit_t*)prf_out2;
-//            index = hashedMsg[1] + ((hashedMsg[1+1]/64) * 256);
-//            ecbEncCounterMode(index,2,prf_out);
-//            memmove(prf_out2,prf_out,32);
-//            digit_t* y_temp = (digit_t*)prf_out2;
-//            add_mod_order(y_temp, y,y);
-
-//            for ( i = 2; i < 18; ++i) { // Same as above happens in the loop
  
-//                index = hashedMsg[2*i] + ((hashedMsg[2*i+1]/64) * 256);
-//                ecbEncCounterMode(index,2,prf_out);
-//                memcpy(prf_out2,prf_out,32);
-//                y_temp = (digit_t*)prf_out2; // Add the y_i's and compute the final y
-//                add_mod_order(y_temp, y,y);
-
-     
-//            }
-        
-
-
-//            subtract_mod_order(r, y,y); // Compute y= r-y and output y as a component of the signature along with h
-//            flagSignEnd = clock();
-//            SignTime = SignTime +(double)(flagSignEnd-flagSignStart);
             cycles2 = cpucycles(); 
             cycles = cycles + (cycles2 - cycles1);
 
@@ -413,13 +328,8 @@ int main()
 
         }
 
-      //  eccnorm(Y_vfy, (point_affine*)myChecks);
-
-        // printf("in very = ");
-        // print_hex(myChecks,64);
-        // printf("\n");
+ 
         modulo_order(x_i, x_i);
-       // ecc_mul_fixed((digit_t*)(sigma), (point_affine*)verPoint);
         Status = PublicKeyGeneration((digit_t*)(sigma), (point_affine*)verPoint);
         if (Status != ECCRYPTO_SUCCESS) {
             goto cleanup;
@@ -436,15 +346,9 @@ int main()
          
         eccnorm(Y_vfy, (point_affine*)myChecks);
 
-        // printf("in very    = ");
-        // print_hex(myChecks,64);
-        // printf("\n");
-      //  encode(P, verPoint);  // Convert rG to unsigned char * 
+ 
         blake2b(h_check, myChecks, NULL, 32,64,0);  // Hash it to get h_check
-
-        //        printf("in very = ");
-        // print_hex(h_check,64);
-        // printf("\n");
+ 
 
         for (i = 0; i<32; i++){ // Compare h_check with h
 
@@ -456,32 +360,7 @@ int main()
 
 
 
-//            vcycles1 = cpucycles();
-//            flagVerStart =clock();       
-//            strcpy(concatMsg, message); // Concatenate msg with h 
-//            memcpy(concatMsg+32, h, 32);
-//            blake2b(hashedMsg, concatMsg, NULL, 64,64,0); // hash the concatenation to find the index for the public keys
-//            for (i = 0; i < 18; ++i) {
-//                index = hashedMsg[i] + ((hashedMsg[i+1]/64) * 256);
-//                ecbEncCounterMode(index,2,prf_out);
-//                eccadd(Y[index],Y_vfy); // Y_vfy = Y_vfy + Y[index] 
-//            }
-//            ecc_mul_fixed(y, P);  // Given y is a signature component, compute P = yG -> similar to P = sG as in the scheme
-//            point_setup(P, P_extproj_t); 
-//            R1_to_R2(P_extproj_t, P_final); 
-//            eccadd(P_final,Y_vfy);  // Add P and Y_vfy -> (r-y)G - yG = rG
-//            point_setup(Y_vfy, P);
-//            encode(P, P_char);  // Convert rG to unsigned char * 
-//            blake2b(h_check, P_char, NULL, 32,32,0);  // Hash it to get h_check
-
-//            for (i = 0; i<32; i++){ // Compare h_check with h
-
-//                if (h[i] != h_check[i]){
-//                    verify = false;
-            
-//                }
-//            }
-
+ 
            flagVerEnd =clock();  
            VerifyTime = VerifyTime + (double)(flagVerEnd-flagVerStart);
            vcycles2 = cpucycles(); 
